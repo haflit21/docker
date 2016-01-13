@@ -1,0 +1,5 @@
+symfony.local:80 192.168.99.1 - - [13/Jan/2016:17:56:10 +0000] "GET /index.php HTTP/1.1" 404 503 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+symfony.local:80 192.168.99.1 - - [13/Jan/2016:17:56:11 +0000] "GET /index.php HTTP/1.1" 404 502 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+symfony.local:80 192.168.99.1 - - [13/Jan/2016:17:56:12 +0000] "GET /index.php HTTP/1.1" 404 502 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+symfony.local:80 192.168.99.1 - - [13/Jan/2016:17:56:14 +0000] "GET / HTTP/1.1" 200 656 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+symfony.local:80 192.168.99.1 - - [13/Jan/2016:17:56:28 +0000] "GET / HTTP/1.1" 200 280 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"

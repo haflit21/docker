@@ -1,0 +1,37 @@
+application:
+    build: application
+    volumes:
+        - ./symfony:/var/www/symfony
+        - ./logs/symfony:/var/www/symfony/app/logs
+    tty: true
+
+php:
+    build: php
+    ports:
+        - 9000:9000
+    volumes_from:
+        - application
+    links :
+        - db:db
+
+apache:
+    build: apache
+    ports:
+        - 82:80
+    links:
+        - php:php
+    volumes_from:
+        - application
+    volumes:
+        - ./logs/apache/:/var/log/apache2
+
+db:
+    image: postgres:9.4.5
+    restart: always
+    ports:
+        - 5433:5432
+    environment:
+        - POSTGRES_PASSWORD=test
+        - POSTGRES_USER=test
+        - POSTGRES_DB=test
+

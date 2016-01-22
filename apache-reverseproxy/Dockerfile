@@ -7,31 +7,38 @@ RUN echo "deb-src http://ftp.debian.org/debian/ wheezy-updates main contrib non-
 RUN echo "deb http://security.debian.org/ wheezy/updates main contrib non-free" >> /etc/apt/sources.list
 RUN echo "deb-src http://security.debian.org/ wheezy/updates main contrib non-free" >> /etc/apt/sources.list
 
-RUN apt-get update && apt-get -y install apache2 libapache2-mod-fastcgi && apt-get clean
+RUN apt-get update && apt-get -y install apache2 && apt-get clean
 
 ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_GROUP www-data
 ENV APACHE_LOG_DIR /var/log/apache2
 
-ADD config/vhost.conf /etc/apache2/sites-available/
-ADD config/fastcgi.conf /etc/apache2/mods-available/
+ADD vhost/relaischateaux.conf /etc/apache2/sites-available/
+ADD vhost/nodejs.conf /etc/apache2/sites-available/
 
-RUN /bin/ln -sf ../mods-available/socache_shmcb.load /etc/apache2/mods-enabled/
+ADD ssl/proxy.crt /etc/apache2/ssl/
+ADD ssl/proxy.key /etc/apache2/ssl/
+
 RUN /bin/ln -sf ../mods-available/ssl.conf /etc/apache2/mods-enabled/
 RUN /bin/ln -sf ../mods-available/ssl.load /etc/apache2/mods-enabled/
-RUN /bin/ln -sf ../mods-available/actions.load /etc/apache2/mods-enabled/
 
 RUN /bin/ln -sf ../sites-available/default-ssl /etc/apache2/sites-enabled/001-default-ssl
-RUN /bin/ln -sf ../sites-available/vhost.conf /etc/apache2/sites-enabled/
+RUN /bin/ln -sf ../sites-available/relaischateaux.conf /etc/apache2/sites-enabled/
+RUN /bin/ln -sf ../sites-available/nodejs.conf /etc/apache2/sites-enabled/
+
+RUN echo "" > /etc/apache2/ports.conf
 
 RUN usermod -u 1000 www-data
 
 EXPOSE 80
 EXPOSE 443
+EXPOSE 1337
 
-RUN a2enmod proxy \
-	&& a2enmod proxy_fcgi \
-	&& a2enmod actions\
-	&& a2enmod rewrite
+RUN a2enmod proxy 
+RUN a2enmod actions 
+RUN a2enmod rewrite 
+RUN a2enmod socache_shmcb
+RUN a2enmod proxy_http
+RUN a2enmod headers
 
 CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]

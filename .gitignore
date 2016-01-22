@@ -1,2 +1,19 @@
-./logs/*
-./symfony/*
+# Mac os files
+.DS_Store
+
+# Data
+data/postgres
+data/initiate.sh
+
+# Logs
+logs
+
+# Application
+symfony
+
+# Containers
+apache-reverseproxy/ssl
+apache-reverseproxy/vhost
+
+# Script
+start.sh

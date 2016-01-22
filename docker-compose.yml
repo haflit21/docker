@@ -6,7 +6,7 @@ application:
     tty: true
 
 php:
-    build: php
+    build: php-fpm
     ports:
         - 9000:9000
     volumes_from:
@@ -25,13 +25,46 @@ apache:
     volumes:
         - ./logs/apache/:/var/log/apache2
 
+reverseproxy:
+    build: apache-reverseproxy
+    ports:
+        - 443:443
+        - 1337:1337
+    volumes_from:
+        - application
+    volumes:
+        - ./logs/reverseproxy/:/var/log/apache2
+    extra_hosts:
+        - "symfony.local:192.168.99.100"
+        - "docker.local:192.168.99.100"
+
 db:
-    image: postgres:9.4.5
+    image: postgres
     restart: always
     ports:
         - 5433:5432
+    volumes:
+        - ./data/postgres:/tmp
     environment:
-        - POSTGRES_PASSWORD=test
-        - POSTGRES_USER=test
-        - POSTGRES_DB=test
+        - POSTGRES_PASSWORD=relaischateaux
+        - POSTGRES_USER=relaischateaux
+        - POSTGRES_DB=relaischateaux
 
+memcached:
+    image: memcached:1.4
+    ports:
+        - 11222:11211
+
+elasticsearch:
+    image: elasticsearch:1.5
+    command: elasticsearch -Des.network.bind_host=0.0.0.0
+    ports:
+        - 9200:9200
+
+node:
+    build: node
+    ports:
+        - 1338:8888
+    volumes:
+        - ./symfony/nodejs:/usr/src/app
+        - ./logs/node:/usr/src/app/logs
